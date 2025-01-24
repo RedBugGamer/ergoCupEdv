@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ergo Cup Rechner</title>
+</head>
+
+<body>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+    <div>
+        <h1>Ergo Cup Rechner</h1>
+        <a href="template.xlsx" download="vorlage.xlsx"><button>Vorlage herunterladen</button></a>
+        <br>
+        <div id="fileList">
+        </div>
+        <input type="file" id="excelFileInput" style="color: transparent" onchange="fileInputEvent()" multiple>
+        <br>
+        <input type="number" id="maxN" value=5>Anzahl der Ergebnisse</input>
+        <br>
+        <button id="calculateBtn" onclick="calculate()" disabled>Berechnen</button>
+        <div id="result"></div>
+    </div>
+</body>
+</html>
