@@ -20,10 +20,13 @@ function handleAddedFile (file) {
     const index = parent.dataset.index
     lists.splice(index, 1)
     parent.remove()
-    document.getElementById('calculateBtn').disabled = lists.length === 0
   })
+  calculate()
 }
-
+function maxNOnChange() {
+  var maxStudents = document.getElementById('maxN').value
+  if (maxStudents!=="") calculate()
+}
 function fileInputEvent () {
   var fileInput = document.getElementById('excelFileInput')
 
@@ -32,7 +35,6 @@ function fileInputEvent () {
     handleAddedFile(file)
   }
   fileInput.value = ''
-  document.getElementById('calculateBtn').disabled = lists.length === 0
 }
 
 function createListOfStudents () {
@@ -75,7 +77,7 @@ function createListOfStudents () {
           alert(
             'Die folgenden Schüler enthalten Fehler:\n' +
               errorText +
-              'z.B. Lehrzeichen können Probleme bereiten'
+              'z.B. Lehrzeichen können Probleme bereiten. Diese Schüler werden von der Berechnung ausgeschlossen'
           )
         }
 
