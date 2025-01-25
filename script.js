@@ -309,9 +309,9 @@ function getUniqueclasses (students) {
   return [...uniqueClasses]
 }
 function createListOfElementsClasses (students) {
-  const uniqueClasses = getUniqueclasses(students)
+  var uniqueClasses = getUniqueclasses(students)
   var elems = []
-
+  uniqueClasses = uniqueClasses.sort()
   uniqueClasses.forEach(function (c) {
     function filterOneClass (student) {
       return student.Klasse == c
