@@ -244,10 +244,39 @@ function createClassesContentElem (classes) {
   })
   return out
 }
+function createBestClassRelativeElem (students) {
+  var elem = document.createElement('div')
+  var header = document.createElement('h2')
+  header.innerText = 'Beste Klassen (Relativ):'
+  elem.appendChild(header)
+
+  var uniqueClasses = new Set()
+  var classes = {}
+  students.forEach(function (s) {
+    if (uniqueClasses.has(s.Klasse)) {
+      classes[s.Klasse].Distanz += s.Distanz
+      classes[s.Klasse].nStudents++
+
+    } else {
+      classes[s.Klasse] = {
+        Distanz: s.Distanz,
+        nStudents:1
+      }
+      uniqueClasses.add(s.Klasse)
+    }
+  })
+  var sorted = Object.entries(classes).sort(function (a, b) {
+    return b[1].Distanz/b[1].nStudents - a[1].Distanz/a[1].nStudents
+  })
+
+  elem.appendChild(createClassesContentElem(sorted))
+
+  return elem
+}
 function createBestClassElem (students) {
   var elem = document.createElement('div')
   var header = document.createElement('h2')
-  header.innerText = 'Beste Klassen:'
+  header.innerText = 'Beste Klassen (Absolut):'
   elem.appendChild(header)
 
   var uniqueClasses = new Set()
@@ -263,7 +292,7 @@ function createBestClassElem (students) {
     }
   })
   var sorted = Object.entries(classes).sort(function (a, b) {
-    b[1] - a[1]
+    return b[1].Distanz - a[1].Distanz
   })
 
   elem.appendChild(createClassesContentElem(sorted))
@@ -299,6 +328,7 @@ async function calculate () {
   })
   resultsElem.appendChild(createStatisticsElem(students))
   resultsElem.appendChild(createBestClassElem(students))
+  resultsElem.appendChild(createBestClassRelativeElem(students))
   resultsElem.appendChild(
     createCategoryElem('Beste Schüler:', filterBy(students, filterGeneral))
   )
@@ -326,12 +356,12 @@ function generateDistribution (students) {
   for (let i = 0;i<maxDistance/100;i++) {
     xAxis.push(i*100)
     yAxis.push(0)
-    xAxisDescriptive.push(i*100+"m - "+String(i*100+100)+"m")
+    xAxisDescriptive.push(i*100+"m - "+String(i*100+99)+"m")
   }
 
   for (let i = 0; i<xAxis.length;i++) {
     students.forEach((s)=>{
-      if (s.Distanz>xAxis[i]&&s.Distanz<xAxis[i]+100) {
+      if (s.Distanz>=xAxis[i]&&s.Distanz<xAxis[i]+100) {
         yAxis[i]++;
       }
     })
