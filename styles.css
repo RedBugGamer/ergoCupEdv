@@ -91,7 +91,7 @@ input[type="file"] {
     background-color: #a0a0a0;
     width: auto;
     display: inline-block;
-    margin-left: 1em;
+    margin: 1em;
 }
 #result {
     padding: 1em;
