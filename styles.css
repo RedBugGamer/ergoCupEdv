@@ -13,6 +13,7 @@ header {
     text-align: center;
 
 }
+
 .buttons {
     background-color: #13aa52;
     border: 1px solid #13aa52;
@@ -34,17 +35,13 @@ header {
     -webkit-user-select: none;
     touch-action: manipulation;
     margin: 1em;
-  }
-  .buttons:disabled {
+}
+
+.buttons:disabled {
     background-color: gray;
     border: 1px solid gray;
-  }
-  
-  @media (min-width: 768px) {
-    .button-37 {
-      padding: 10px 30px;
-    }
-  }
+}
+
 #maxN {
     background-color: #fff;
     border: 1px solid #ccc;
@@ -71,7 +68,7 @@ header {
 }
 
 .removeButtons {
-    display:inline-block;
+    display: inline-block;
     color: red;
     height: 2em;
     width: 2em;
@@ -80,19 +77,21 @@ header {
     line-height: 2em;
     vertical-align: middle;
     padding: 0%;
-    background-color: #a0a0a0;
+    background-color: #d0d0d0;
 }
+
 input[type="file"] {
     display: none;
 }
 
 .files {
     padding-left: 0em;
-    background-color: #a0a0a0;
+    background-color: #d0d0d0;
     width: auto;
     display: inline-block;
     margin: 1em;
 }
+
 #result {
     padding: 1em;
 }
