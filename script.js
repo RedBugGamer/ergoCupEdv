@@ -199,6 +199,21 @@ function createStatisticsElem (students) {
     Math.round(totalDistance / students.length) +
     'm'
   elem.appendChild(averageElem)
+  elem.appendChild(document.createElement('br'))
+
+  var totalElem = document.createElement('span')
+  totalElem.innerText="Anzahl Schüler: "+students.length
+  elem.appendChild(totalElem)
+  elem.appendChild(document.createElement('br'))
+
+  var totalBoysElem = document.createElement('span')
+  totalBoysElem.innerText="Anzahl Jungs: "+filterBy(students,filterBoys).length
+  elem.appendChild(totalBoysElem)
+  elem.appendChild(document.createElement('br'))
+
+  var totalGrilsElem = document.createElement('span')
+  totalGrilsElem.innerText="Anzahl Mädchen: "+filterBy(students,filterGirls).length
+  elem.appendChild(totalGrilsElem)
 
   return elem
 }
