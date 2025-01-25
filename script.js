@@ -48,18 +48,24 @@ function createListOfStudents () {
         var firstSheetName = workbook.SheetNames[0]
         var worksheet = workbook.Sheets[firstSheetName]
         var sheetData = XLSX.utils.sheet_to_json(worksheet)
-
+        var errorText=""
         sheetData.forEach(function (student) {
-          if (!isNaN(student.Distanz)) {
-            students.push({
+            if (!isNaN(student.Distanz) && typeof student.Distanz === 'number' && /^\d+$/.test(student.Distanz.toString().trim())) {
+              students.push({
               Name: student.Name,
               Vorname: student.Vorname,
               Klasse: student.Klasse,
               Geschlecht: student.Geschlecht,
               Distanz: student.Distanz
-            })
-          }
+              })
+            }
+            else if (student.Distanz !== "" && student.Distanz !== undefined && student.Distanz !== null) {
+              errorText+=student.Vorname+" "+student.Name+" "+student.Klasse+"\n"
+            }
         })
+        if(errorText!=="") {
+          alert("Die folgenden Schüler enthalten Fehler:\n"+errorText+"z.B. Lehrzeichen können Probleme bereiten")
+        }
 
         filesProcessed++
         if (filesProcessed === lists.length) {
@@ -169,13 +175,13 @@ function createStatisticsElem (students) {
     totalDistance += student.Distanz
   })
   var distanceElem = document.createElement('span')
-  distanceElem.innerText = 'Gesamte Strecke: ' + totalDistance
+  distanceElem.innerText = 'Gesamte Strecke: ' + totalDistance+"m"
   elem.appendChild(distanceElem)
   elem.appendChild(document.createElement('br'))
 
   var averageElem = document.createElement('span')
   averageElem.innerText =
-    'Druchschnittliche Strecke: ' + Math.round(totalDistance / students.length)
+    'Druchschnittliche Strecke: ' + Math.round(totalDistance / students.length)+"m"
   elem.appendChild(averageElem)
 
   return elem
