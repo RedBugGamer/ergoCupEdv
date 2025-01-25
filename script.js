@@ -353,7 +353,7 @@ function generateDistribution (students) {
   var xAxis=[]
   var yAxis=[]
   var xAxisDescriptive=[]
-  for (let i = 0;i<maxDistance/100;i++) {
+  for (let i = 0;i<(maxDistance+100)/100;i++) {
     xAxis.push(i*100)
     yAxis.push(0)
     xAxisDescriptive.push(i*100+"m - "+String(i*100+99)+"m")
