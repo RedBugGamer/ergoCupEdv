@@ -7,10 +7,12 @@ function handleAddedFile (file) {
   var oneFileElem = document.createElement('div')
   oneFileElem.innerHTML = file.name
   oneFileElem.dataset.index = lists.length - 1
+  oneFileElem.classList.add("files")
   fileListElem.appendChild(oneFileElem)
 
   var removeFileElem = document.createElement('button')
-  removeFileElem.innerHTML = 'X'
+  removeFileElem.innerHTML = '❌'
+  removeFileElem.classList.add("removeButtons")
   oneFileElem.appendChild(removeFileElem)
 
   removeFileElem.addEventListener('click', event => {
@@ -71,16 +73,17 @@ function createListOfStudents () {
     })
   })
 }
-// function calculateTopStudents(students) {
 
-// }
 function filterBy (students, filter) {
   var maxStudents = document.getElementById('maxN').value
   var out = []
-  var allDistances=new Set()
+  var allDistances = new Set()
   for (let i = 0; i < students.length; i++) {
     var student = students[i]
-    if (filter(student) && (out.length < maxStudents || allDistances.has(student.Distanz))) {
+    if (
+      filter(student) &&
+      (out.length < maxStudents || allDistances.has(student.Distanz))
+    ) {
       allDistances.add(student.Distanz)
       out.push(student)
     }
@@ -90,11 +93,11 @@ function filterBy (students, filter) {
 function filterGeneral (student) {
   return true
 }
-function filterGirls(student) {
-    return student.Geschlecht.toLowerCase()=="w"
+function filterGirls (student) {
+  return student.Geschlecht.toLowerCase() == 'w'
 }
-function filterBoys(student) {
-    return student.Geschlecht.toLowerCase()=="m"
+function filterBoys (student) {
+  return student.Geschlecht.toLowerCase() == 'm'
 }
 function createCategoryContentElem (students) {
   var data = [[]]
@@ -115,17 +118,17 @@ function createCategoryContentElem (students) {
       }
     }
   }
-//   data = data.reverse()
+  //   data = data.reverse()
 
   var out = document.createElement('div')
   var placeIndex = 0
   data.forEach(function (place) {
     var placeElem = document.createElement('span')
-    var nextDisplacement = -1;
+    var nextDisplacement = -1
     place.forEach(function (student) {
-        placeIndex++
-        nextDisplacement++
-        placeElem.innerHTML +=
+      placeIndex++
+      nextDisplacement++
+      placeElem.innerHTML +=
         student.Vorname +
         ' ' +
         student.Name +
@@ -135,55 +138,159 @@ function createCategoryContentElem (students) {
         student.Distanz +
         'm; '
     })
-    placeElem.innerHTML = '' + placeIndex-nextDisplacement + '. '+placeElem.innerHTML.slice(0,placeElem.innerHTML.length-2)
+    placeElem.innerHTML =
+      '' +
+      placeIndex -
+      nextDisplacement +
+      '. ' +
+      placeElem.innerHTML.slice(0, placeElem.innerHTML.length - 2)
     out.appendChild(placeElem)
     out.appendChild(document.createElement('br'))
   })
   return out
 }
-function createCategoryElem(title,students) {
-    var elem = document.createElement("div")
-    var header = document.createElement("h2")
-    header.innerText=title
-    elem.appendChild(header)
-    elem.appendChild(createCategoryContentElem(students))
+function createCategoryElem (title, students) {
+  var elem = document.createElement('div')
+  var header = document.createElement('h2')
+  header.innerText = title
+  elem.appendChild(header)
+  elem.appendChild(createCategoryContentElem(students))
 
-    return elem
+  return elem
 }
-function createStatisticsElem(students) {
-    var elem = document.createElement("div")
-    var header = document.createElement("h2")
-    header.innerText="Statistik:"
-    elem.appendChild(header)
+function createStatisticsElem (students) {
+  var elem = document.createElement('div')
+  var header = document.createElement('h2')
+  header.innerText = 'Statistik:'
+  elem.appendChild(header)
 
-    var totalDistance = 0
-    students.forEach(function(student){totalDistance+=student.Distanz})
-    var distanceElem = document.createElement("span")
-    distanceElem.innerText="Gesamte Strecke: "+totalDistance
-    elem.appendChild(distanceElem)
-    elem.appendChild(document.createElement("br"))
+  var totalDistance = 0
+  students.forEach(function (student) {
+    totalDistance += student.Distanz
+  })
+  var distanceElem = document.createElement('span')
+  distanceElem.innerText = 'Gesamte Strecke: ' + totalDistance
+  elem.appendChild(distanceElem)
+  elem.appendChild(document.createElement('br'))
 
-    var averageElem = document.createElement("span")
-    averageElem.innerText="Druchschnittliche Strecke: "+Math.round(totalDistance/students.length)
-    elem.appendChild(averageElem)
+  var averageElem = document.createElement('span')
+  averageElem.innerText =
+    'Druchschnittliche Strecke: ' + Math.round(totalDistance / students.length)
+  elem.appendChild(averageElem)
 
-    return elem
+  return elem
 }
-function createBestClassElem() {
-    var elem = document.createElement("div")
-    var header = document.createElement("h2")
-    header.innerText="Beste Klassen:"
-    elem.appendChild(header)
+function createClassesContentElem (classes) {
+  var data = [[]]
+  for (let i = 0; i < classes.length; i++) {
+    const singleClass = {Name:classes[i][0],Distanz:classes[i][1].Distanz}
+    var individualPlace = data[data.length - 1]
+
+    if (individualPlace.length === 0) {
+      individualPlace.push(singleClass)
+    } else {
+      if (
+        singleClass.Distanz === individualPlace[individualPlace.length - 1].Distanz
+      ) {
+        individualPlace.push(singleClass)
+      } else {
+        data.push([])
+        data[data.length - 1].push(singleClass)
+      }
+    }
+  }
+  //   data = data.reverse()
+
+  var out = document.createElement('div')
+  var placeIndex = 0
+  data.forEach(function (place) {
+    var placeElem = document.createElement('span')
+    var nextDisplacement = -1
+    place.forEach(function (singleClass) {
+      placeIndex++
+      nextDisplacement++
+      placeElem.innerHTML +=
+        singleClass.Name +
+        ' ' +
+        singleClass.Distanz +
+        'm; '
+    })
+    placeElem.innerHTML =
+      '' +
+      placeIndex -
+      nextDisplacement +
+      '. ' +
+      placeElem.innerHTML.slice(0, placeElem.innerHTML.length - 2)
+    out.appendChild(placeElem)
+    out.appendChild(document.createElement('br'))
+  })
+  return out
+}
+function createBestClassElem (students) {
+  var elem = document.createElement('div')
+  var header = document.createElement('h2')
+  header.innerText = 'Beste Klassen:'
+  elem.appendChild(header)
+
+  var uniqueClasses = new Set()
+  var classes = {}
+  students.forEach(function (s) {
+    if (uniqueClasses.has(s.Klasse)) {
+      classes[s.Klasse].Distanz += s.Distanz
+    } else {
+      classes[s.Klasse] = {
+        Distanz: s.Distanz
+      }
+      uniqueClasses.add(s.Klasse)
+    }
+  })
+  var sorted = Object.entries(classes).sort(function (a, b) {
+    b[1] - a[1]
+  })
+
+  elem.appendChild(createClassesContentElem(sorted))
+
+  return elem
+}
+function getUniqueclasses(students) {
+  var uniqueClasses = new Set()
+  students.forEach(function (s) {
+      uniqueClasses.add(s.Klasse)
+  })
+
+  return [...uniqueClasses]
+}
+function createListOfElementsClasses(students) {
+  const uniqueClasses = getUniqueclasses(students)
+  var elems = []
+
+  uniqueClasses.forEach(function(c) {
+    function filterOneClass(student) {
+      return student.Klasse == c
+    }
+    elems.push(createCategoryElem(c+":",filterBy(students,filterOneClass)))
+  })
+  return elems
 }
 async function calculate () {
   var students = await createListOfStudents()
   var resultsElem = document.getElementById('result')
-  resultsElem.innerHTML=""
+  resultsElem.innerHTML = ''
   students = students.sort(function (a, b) {
     return b.Distanz - a.Distanz
   })
   resultsElem.appendChild(createStatisticsElem(students))
-  resultsElem.appendChild(createCategoryElem("Beste Schüler:",filterBy(students, filterGeneral)))
-  resultsElem.appendChild(createCategoryElem("Beste Mädchen:",filterBy(students, filterGirls)))
-  resultsElem.appendChild(createCategoryElem("Beste Jungs:",filterBy(students, filterBoys)))
+  resultsElem.appendChild(createBestClassElem(students))
+  resultsElem.appendChild(
+    createCategoryElem('Beste Schüler:', filterBy(students, filterGeneral))
+  )
+  resultsElem.appendChild(
+    createCategoryElem('Beste Mädchen:', filterBy(students, filterGirls))
+  )
+  resultsElem.appendChild(
+    createCategoryElem('Beste Jungs:', filterBy(students, filterBoys))
+  )
+  createListOfElementsClasses(students).forEach(function(elem) {
+    resultsElem.appendChild(elem)
+  })
 }

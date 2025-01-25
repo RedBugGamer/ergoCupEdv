@@ -3,22 +3,28 @@
 
 <head>
     <title>Ergo Cup Rechner</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <body>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
     <script src="script.js"></script>
-    <div>
+    <meta charset="UTF-8">
+    <header>
         <h1>Ergo Cup Rechner</h1>
-        <a href="template.xlsx" download="vorlage.xlsx"><button>Vorlage herunterladen</button></a>
+    </header>
+    <div>
+        <a  href="template.xlsx" download="vorlage.xlsx"><button class="buttons">Vorlage herunterladen</button></a>
         <br>
         <div id="fileList">
         </div>
-        <input type="file" id="excelFileInput" style="color: transparent" onchange="fileInputEvent()" multiple>
+        <label for="excelFileInput" class="custom-file-upload buttons" style="cursor: pointer; display: inline-block; padding: 10px 20px; background-color: #13aa52; color: white; border: none; border-radius: 4px; text-align: center;">Datei hochladen</label>
+        <input class="" type="file" id="excelFileInput" style="color: transparent" onchange="fileInputEvent()" multiple>
         <br>
         <input type="number" id="maxN" value=5>Anzahl der Ergebnisse</input>
         <br>
-        <button id="calculateBtn" onclick="calculate()" disabled>Berechnen</button>
+        <button class="buttons" id="calculateBtn" onclick="calculate()" disabled>Berechnen</button>
         <div id="result"></div>
     </div>
 </body>
