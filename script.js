@@ -371,6 +371,8 @@ function generateDistribution (students) {
 function createChartElem (students) {
   var ctx = document.createElement('canvas')
   const [x,y]=generateDistribution(students)
+  const [x_m,y_m]=generateDistribution(filterBy(students,filterBoys))
+  const [x_w,y_w]=generateDistribution(filterBy(students,filterGirls))
   new Chart(ctx, {
     type: 'bar',
     data: {
@@ -379,6 +381,16 @@ function createChartElem (students) {
         {
           label: 'Verteilung der Strecken',
           data: y,
+          borderWidth: 1
+        },
+        {
+          label: 'Verteilung der Strecken Mädchen',
+          data: y_w,
+          borderWidth: 1
+        },
+        {
+          label: 'Verteilung der Strecken Jungs',
+          data: y_m,
           borderWidth: 1
         }
       ]
