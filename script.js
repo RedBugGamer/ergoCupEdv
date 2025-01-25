@@ -23,9 +23,9 @@ function handleAddedFile (file) {
   })
   calculate()
 }
-function maxNOnChange() {
+function maxNOnChange () {
   var maxStudents = document.getElementById('maxN').value
-  if (maxStudents!=="") calculate()
+  if (maxStudents !== '') calculate()
 }
 function fileInputEvent () {
   var fileInput = document.getElementById('excelFileInput')
@@ -51,6 +51,7 @@ function createListOfStudents () {
         var worksheet = workbook.Sheets[firstSheetName]
         var sheetData = XLSX.utils.sheet_to_json(worksheet)
         var errorText = ''
+        var genderWarn = ''
         sheetData.forEach(function (student) {
           if (
             !isNaN(student.Distanz) &&
@@ -64,6 +65,20 @@ function createListOfStudents () {
               Geschlecht: student.Geschlecht,
               Distanz: student.Distanz
             })
+            if (
+              student.Geschlecht.toLowerCase() !== 'w' &&
+              student.Geschlecht.toLowerCase() !== 'm'
+            ) {
+              genderWarn +=
+                student.Vorname +
+                ' ' +
+                student.Name +
+                ' ' +
+                student.Klasse +
+                ' ' +
+                student.Geschlecht +
+                '\n'
+            }
           } else if (
             student.Distanz !== '' &&
             student.Distanz !== undefined &&
@@ -80,6 +95,13 @@ function createListOfStudents () {
               'z.B. Lehrzeichen können Probleme bereiten. Diese Schüler werden von der Berechnung ausgeschlossen'
           )
         }
+        if (genderWarn !== '') {
+          alert(
+            'Das Geschlecht der folgenden Schüler kann nicht gelesen werden:\n' +
+              genderWarn +
+              'Die Schüler werden trotzdem in allgemeinen Rechnungen eingeschlossen.'
+          )
+        }
 
         filesProcessed++
         if (filesProcessed === lists.length) {
@@ -94,7 +116,7 @@ function createListOfStudents () {
   })
 }
 
-function filterBy (students, filter,ignoreMaxN=false) {
+function filterBy (students, filter, ignoreMaxN = false) {
   var maxStudents = document.getElementById('maxN').value
   var out = []
   var allDistances = new Set()
@@ -102,7 +124,9 @@ function filterBy (students, filter,ignoreMaxN=false) {
     var student = students[i]
     if (
       filter(student) &&
-      (out.length < maxStudents || allDistances.has(student.Distanz)||ignoreMaxN)
+      (out.length < maxStudents ||
+        allDistances.has(student.Distanz) ||
+        ignoreMaxN)
     ) {
       allDistances.add(student.Distanz)
       out.push(student)
@@ -195,24 +219,26 @@ function createStatisticsElem (students) {
 
   var averageElem = document.createElement('span')
   averageElem.innerText =
-    'Druchschnittliche Strecke: ' +
+    'Durchschnittliche Strecke: ' +
     Math.round(totalDistance / students.length) +
     'm'
   elem.appendChild(averageElem)
   elem.appendChild(document.createElement('br'))
 
   var totalElem = document.createElement('span')
-  totalElem.innerText="Anzahl Schüler: "+students.length
+  totalElem.innerText = 'Anzahl Schüler: ' + students.length
   elem.appendChild(totalElem)
   elem.appendChild(document.createElement('br'))
 
   var totalBoysElem = document.createElement('span')
-  totalBoysElem.innerText="Anzahl Jungs: "+filterBy(students,filterBoys).length
+  totalBoysElem.innerText =
+    'Anzahl Jungs: ' + filterBy(students, filterBoys, true).length
   elem.appendChild(totalBoysElem)
   elem.appendChild(document.createElement('br'))
 
   var totalGrilsElem = document.createElement('span')
-  totalGrilsElem.innerText="Anzahl Mädchen: "+filterBy(students,filterGirls).length
+  totalGrilsElem.innerText =
+    'Anzahl Mädchen: ' + filterBy(students, filterGirls, true).length
   elem.appendChild(totalGrilsElem)
 
   return elem
@@ -387,8 +413,8 @@ function generateDistribution (students) {
 function createChartElem (students) {
   var ctx = document.createElement('canvas')
   const [x, y] = generateDistribution(students)
-  const [x_m, y_m] = generateDistribution(filterBy(students, filterBoys,true))
-  const [x_w, y_w] = generateDistribution(filterBy(students, filterGirls,true))
+  const [x_m, y_m] = generateDistribution(filterBy(students, filterBoys, true))
+  const [x_w, y_w] = generateDistribution(filterBy(students, filterGirls, true))
   new Chart(ctx, {
     type: 'bar',
     data: {
