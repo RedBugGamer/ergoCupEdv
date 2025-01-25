@@ -92,7 +92,7 @@ function createListOfStudents () {
   })
 }
 
-function filterBy (students, filter) {
+function filterBy (students, filter,ignoreMaxN=false) {
   var maxStudents = document.getElementById('maxN').value
   var out = []
   var allDistances = new Set()
@@ -100,7 +100,7 @@ function filterBy (students, filter) {
     var student = students[i]
     if (
       filter(student) &&
-      (out.length < maxStudents || allDistances.has(student.Distanz))
+      (out.length < maxStudents || allDistances.has(student.Distanz)||ignoreMaxN)
     ) {
       allDistances.add(student.Distanz)
       out.push(student)
@@ -256,17 +256,16 @@ function createBestClassRelativeElem (students) {
     if (uniqueClasses.has(s.Klasse)) {
       classes[s.Klasse].Distanz += s.Distanz
       classes[s.Klasse].nStudents++
-
     } else {
       classes[s.Klasse] = {
         Distanz: s.Distanz,
-        nStudents:1
+        nStudents: 1
       }
       uniqueClasses.add(s.Klasse)
     }
   })
   var sorted = Object.entries(classes).sort(function (a, b) {
-    return b[1].Distanz/b[1].nStudents - a[1].Distanz/a[1].nStudents
+    return b[1].Distanz / b[1].nStudents - a[1].Distanz / a[1].nStudents
   })
 
   elem.appendChild(createClassesContentElem(sorted))
@@ -348,31 +347,31 @@ function generateDistribution (students) {
   students.forEach(function (s) {
     if (s.Distanz > maxDistance) maxDistance = s.Distanz
   })
-  maxDistance=Math.ceil(maxDistance/100)*100
+  maxDistance = Math.ceil(maxDistance / 100) * 100
 
-  var xAxis=[]
-  var yAxis=[]
-  var xAxisDescriptive=[]
-  for (let i = 0;i<(maxDistance+100)/100;i++) {
-    xAxis.push(i*100)
+  var xAxis = []
+  var yAxis = []
+  var xAxisDescriptive = []
+  for (let i = 0; i < (maxDistance + 100) / 100; i++) {
+    xAxis.push(i * 100)
     yAxis.push(0)
-    xAxisDescriptive.push(i*100+"m - "+String(i*100+99)+"m")
+    xAxisDescriptive.push(i * 100 + 'm - ' + String(i * 100 + 99) + 'm')
   }
 
-  for (let i = 0; i<xAxis.length;i++) {
-    students.forEach((s)=>{
-      if (s.Distanz>=xAxis[i]&&s.Distanz<xAxis[i]+100) {
-        yAxis[i]++;
+  for (let i = 0; i < xAxis.length; i++) {
+    students.forEach(s => {
+      if (s.Distanz >= xAxis[i] && s.Distanz < xAxis[i] + 100) {
+        yAxis[i]++
       }
     })
   }
-  return [xAxisDescriptive,yAxis]
+  return [xAxisDescriptive, yAxis]
 }
 function createChartElem (students) {
   var ctx = document.createElement('canvas')
-  const [x,y]=generateDistribution(students)
-  const [x_m,y_m]=generateDistribution(filterBy(students,filterBoys))
-  const [x_w,y_w]=generateDistribution(filterBy(students,filterGirls))
+  const [x, y] = generateDistribution(students)
+  const [x_m, y_m] = generateDistribution(filterBy(students, filterBoys,true))
+  const [x_w, y_w] = generateDistribution(filterBy(students, filterGirls,true))
   new Chart(ctx, {
     type: 'bar',
     data: {
