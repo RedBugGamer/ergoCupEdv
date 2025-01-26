@@ -20,6 +20,7 @@ function handleAddedFile (file) {
     const index = parent.dataset.index
     lists.splice(index, 1)
     parent.remove()
+    if (lists.length>0) calculate()
   })
   calculate()
 }
