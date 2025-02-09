@@ -79,6 +79,9 @@ header {
     padding: 0%;
     background-color: #d0d0d0;
 }
+.removeButtons:hover {
+    transform: scale(1.1);
+}
 
 input[type="file"] {
     display: none;

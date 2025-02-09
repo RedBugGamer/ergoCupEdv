@@ -22,9 +22,27 @@
         <label for="excelFileInput" class="custom-file-upload buttons" style="cursor: pointer; display: inline-block; padding: 10px 20px; background-color: #13aa52; color: white; border: none; border-radius: 4px; text-align: center;">Datei(-en) hochladen</label>
         <input class="" type="file" id="excelFileInput" style="color: transparent" onchange="fileInputEvent()" accept=".xlsx, .xls, .csv, .ods" multiple>
         <br>
-        <input type="number" id="maxN" value=5 onchange="maxNOnChange()">Anzahl der Ergebnisse</input>
+        <input type="number" id="maxN" value=5 onchange="maxNOnChange()">Anzahl der Plätze</input>
         <br>
-        <div id="result"></div>
+        <div id="result">
+            <br>
+            Hier werden später die Ergebnisse angezeigt.
+            <br>
+            <h2>Info:</h2>
+            Die Seite unterstützt das Hochladen von mehreren Dateien. So kann man z.B. eine Datei pro Jahrgangstufe/Klasse haben. <b>Die erste Zeile jeder Datei muss mit der Vorlage übereinstimmen! </b>(Die Farbe ist egal)
+            <h2 style="color: red;">Warnung:</h2> 
+            Es ist möglich, dass bei z.B. der folgenden Verteilung mehr Schüler als erwartet in die Siegerehrung kommen. Dieser Ausnahmefall ist jedoch sehr unwahrscheinlich und entsteht nur, wenn mehrere Schüler auf dem letzten gezeigten Platz die selbe Strecke haben.
+            <h3>Beispiel:</h3>
+            1. Max Mustermann 1000m
+            <br>
+            2. Hans Müller 900m
+            <br>
+            3. Peter Meyer 800m
+            <br>
+            4. Lisa Schmidt 700m
+            <br>
+            5. Julia Schulz 600m; <span style="color: red;">Stefan Fischer 600m</span>
+        </div>
     </div>
 </body>
 </html>

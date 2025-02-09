@@ -1,5 +1,21 @@
 var lists = []
-
+const defaultText = `<br>
+            Hier werden später die Ergebnisse angezeigt.
+            <br>
+            <h2>Info:</h2>
+            Die Seite unterstützt das Hochladen von mehreren Dateien. So kann man z.B. eine Datei pro Jahrgangstufe/Klasse haben. <b>Die erste Zeile jeder Datei muss mit der Vorlage übereinstimmen! </b>(Die Farbe ist egal)
+            <h2 style="color: red;">Warnung:</h2> 
+            Es ist möglich, dass bei z.B. der folgenden Verteilung mehr Schüler als erwartet in die Siegerehrung kommen. Dieser Ausnahmefall ist jedoch sehr unwahrscheinlich und entsteht nur, wenn mehrere Schüler auf dem letzten gezeigten Platz die selbe Strecke haben.
+            <h3>Beispiel:</h3>
+            1. Max Mustermann 1000m
+            <br>
+            2. Hans Müller 900m
+            <br>
+            3. Peter Meyer 800m
+            <br>
+            4. Lisa Schmidt 700m
+            <br>
+            5. Julia Schulz 600m; <span style="color: red;">Stefan Fischer 600m</span>`
 function handleAddedFile (file) {
   var fileListElem = document.getElementById('fileList')
   lists.push(file)
@@ -21,6 +37,10 @@ function handleAddedFile (file) {
     lists.splice(index, 1)
     parent.remove()
     if (lists.length>0) calculate()
+      else {
+        var resultsElem = document.getElementById('result')
+        resultsElem.innerHTML = defaultText
+      }
   })
   calculate()
 }
